@@ -4,9 +4,9 @@ import { eq } from 'drizzle-orm';
 import Link from 'next/link';
 
 interface ArticlePageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 async function getArticle(id: string) {
@@ -20,7 +20,8 @@ async function getArticle(id: string) {
 }
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
-  const article = await getArticle(params.id);
+  const { id } = await params;
+  const article = await getArticle(id);
 
   if (!article) {
     notFound();

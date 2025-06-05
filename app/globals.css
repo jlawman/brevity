@@ -14,13 +14,36 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #09090b;
+    --foreground: #fafafa;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Glassmorphism utilities */
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-md bg-white/10 border border-white/20;
+  }
+  
+  .glass-hover {
+    @apply hover:bg-white/20 transition-colors duration-200;
+  }
+  
+  .glass-dark {
+    @apply backdrop-blur-md bg-gray-900/10 border border-gray-800/20;
+  }
+  
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-primary-700;
+  }
+  
+  .text-gradient-accent {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-500 to-accent-700;
+  }
 }

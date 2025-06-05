@@ -44,10 +44,18 @@ const mockArticles = [
 export default function DashboardPage() {
   const [articles] = useState(mockArticles);
   const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredArticles = articles.filter(article => {
-    if (filter === 'all') return true;
-    return article.category.toLowerCase() === filter.toLowerCase();
+    // Category filter
+    const matchesCategory = filter === 'all' || article.category.toLowerCase() === filter.toLowerCase();
+    
+    // Search filter
+    const matchesSearch = searchQuery === '' || 
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.summary.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    return matchesCategory && matchesSearch;
   });
 
   return (
@@ -88,8 +96,38 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="mb-8">
+        {/* Search and Filter */}
+        <div className="mb-8 space-y-4">
+          {/* Search Bar */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search articles by title or content..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-full bg-white/50 dark:bg-gray-800/50 backdrop-blur-md border border-white/20 px-6 py-3 pl-12 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            />
+            <svg 
+              className="absolute left-4 top-3.5 h-5 w-5 text-gray-500 dark:text-gray-400" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-4 top-3.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            )}
+          </div>
+          
+          {/* Filter Tabs */}
           <nav className="flex space-x-4" aria-label="Tabs">
             {['all', 'technology', 'finance', 'environment'].map((category) => (
               <button
@@ -106,6 +144,15 @@ export default function DashboardPage() {
             ))}
           </nav>
         </div>
+
+        {/* Results Count */}
+        {(searchQuery || filter !== 'all') && (
+          <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+            Found {filteredArticles.length} {filteredArticles.length === 1 ? 'article' : 'articles'}
+            {searchQuery && ` matching "${searchQuery}"`}
+            {filter !== 'all' && ` in ${filter}`}
+          </div>
+        )}
 
         {/* Articles Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 // Mock data for development
 const mockArticles = [
@@ -159,12 +160,20 @@ export default function DashboardPage() {
 
                 {/* Action Buttons */}
                 <div className="mt-4 flex space-x-2">
-                  <button className="flex-1 rounded-lg bg-gradient-primary px-3 py-2 text-xs font-medium text-white shadow-sm hover:shadow-md transition-all duration-200">
+                  <Link 
+                    href={`/article/${article.id}`}
+                    className="flex-1 rounded-lg bg-gradient-primary px-3 py-2 text-xs font-medium text-white shadow-sm hover:shadow-md transition-all duration-200 text-center"
+                  >
                     Read Summary
-                  </button>
-                  <button className="flex-1 rounded-lg glass glass-hover px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300">
+                  </Link>
+                  <a 
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 rounded-lg glass glass-hover px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-300 text-center"
+                  >
                     Original Article
-                  </button>
+                  </a>
                 </div>
               </div>
             </article>

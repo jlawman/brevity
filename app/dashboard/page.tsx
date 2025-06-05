@@ -15,7 +15,7 @@ const mockArticles = [
     readingTime: '5 min',
     savedAt: '2024-01-15T10:30:00Z',
     wordCount: 2500,
-    featuredImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=300&fit=crop',
+    featuredImage: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400',
   },
   {
     id: '2',
@@ -26,7 +26,7 @@ const mockArticles = [
     readingTime: '7 min',
     savedAt: '2024-01-14T15:45:00Z',
     wordCount: 3200,
-    featuredImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=300&fit=crop',
+    featuredImage: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400',
   },
   {
     id: '3',
@@ -37,7 +37,7 @@ const mockArticles = [
     readingTime: '6 min',
     savedAt: '2024-01-13T09:15:00Z',
     wordCount: 2800,
-    featuredImage: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=300&fit=crop',
+    featuredImage: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400',
   },
 ];
 

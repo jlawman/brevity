@@ -26,9 +26,31 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update status
       statusMessage.textContent = 'Saving to Brevity...';
 
-      // TODO: Send to API endpoint
-      // For now, just simulate success
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Send to API endpoint
+      const apiUrl = 'http://localhost:3000/api/articles'; // Use production URL in manifest
+      const apiResponse = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: response.url,
+          title: response.title,
+          textContent: response.textContent,
+          author: response.author,
+          publishDate: response.publishDate,
+          description: response.description,
+          featuredImage: response.featuredImage,
+          wordCount: response.wordCount,
+        }),
+      });
+
+      if (!apiResponse.ok) {
+        const error = await apiResponse.json();
+        throw new Error(error.error || 'Failed to save article');
+      }
+
+      const result = await apiResponse.json();
 
       // Show success
       statusDiv.classList.add('success');

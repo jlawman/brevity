@@ -7,7 +7,6 @@ import {
   jsonb,
 } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import { z } from 'zod';
 
 export const articles = pgTable('articles', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -30,11 +29,11 @@ export type NewArticle = typeof articles.$inferInsert;
 
 // Zod schemas for validation
 export const insertArticleSchema = createInsertSchema(articles, {
-  url: z.string().url(),
-  title: z.string().min(1),
-  originalText: z.string().min(1),
-  wordCount: z.number().positive(),
-  userId: z.string().min(1),
+  url: (schema) => schema.url(),
+  title: (schema) => schema.min(1),
+  originalText: (schema) => schema.min(1),
+  wordCount: (schema) => schema.positive(),
+  userId: (schema) => schema.min(1),
 });
 
 export const selectArticleSchema = createSelectSchema(articles);

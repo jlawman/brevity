@@ -5,6 +5,6 @@ export default {
   out: './drizzle',
   schema: './lib/db/schema.ts',
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL!,
+    url: process.env['DATABASE_URL']!,
   },
 } satisfies Config;

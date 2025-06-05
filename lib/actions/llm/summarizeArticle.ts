@@ -1,13 +1,13 @@
 'use server';
 
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Initialize Google AI client
-const googleApiKey = process.env.GOOGLE_API_KEY;
-let genAI: GoogleGenAI | null = null;
+const googleApiKey = process.env['GOOGLE_API_KEY'];
+let genAI: GoogleGenerativeAI | null = null;
 
 if (googleApiKey) {
-  genAI = new GoogleGenAI({ apiKey: googleApiKey });
+  genAI = new GoogleGenerativeAI(googleApiKey);
 } else {
   console.warn(
     'GOOGLE_API_KEY is not set. Article summarization will be disabled.',
@@ -80,7 +80,9 @@ The overall tone of the article (e.g., informative, opinion, analytical, news re
       const match = tag.match(/<(\w+)>([\s\S]*?)<\/\1>/);
       if (match) {
         const [, tagName, tagContent] = match;
-        xmlContents[tagName] = tagContent.trim();
+        if (tagName && tagContent) {
+          xmlContents[tagName] = tagContent.trim();
+        }
       }
     });
 

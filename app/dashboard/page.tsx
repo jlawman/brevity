@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import AudioPlayer from '@/components/AudioPlayer';
 
 // Mock data for development
 const mockArticles = [
@@ -45,6 +46,13 @@ export default function DashboardPage() {
   const [articles] = useState(mockArticles);
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+  const [audioData, setAudioData] = useState<{
+    audioUrl: string;
+    transcript: string;
+    duration: number;
+  } | null>(null);
+  const [isGeneratingAudio, setIsGeneratingAudio] = useState(false);
 
   const filteredArticles = articles.filter(article => {
     // Category filter
@@ -58,6 +66,38 @@ export default function DashboardPage() {
     return matchesCategory && matchesSearch;
   });
 
+  const generateDailyDigest = async () => {
+    setIsGeneratingAudio(true);
+    try {
+      // For demo, we'll generate audio for filtered articles
+      const articleIds = filteredArticles.map(a => a.id);
+      
+      const response = await fetch('/api/audio-digest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'selected',
+          articleIds,
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to generate audio');
+      
+      const data = await response.json();
+      setAudioData({
+        audioUrl: data.audioUrl,
+        transcript: data.transcript,
+        duration: data.duration,
+      });
+      setShowAudioPlayer(true);
+    } catch (error) {
+      console.error('Error generating audio digest:', error);
+      // In production, show error toast
+    } finally {
+      setIsGeneratingAudio(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
       {/* Header */}
@@ -67,8 +107,27 @@ export default function DashboardPage() {
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
               My Reading Dashboard
             </h1>
-            <button className="rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-white shadow-md hover:shadow-lg transition-all duration-200">
-              Daily Digest
+            <button 
+              onClick={generateDailyDigest}
+              disabled={isGeneratingAudio || filteredArticles.length === 0}
+              className="rounded-full bg-gradient-primary px-4 py-2 text-sm font-medium text-white shadow-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+            >
+              {isGeneratingAudio ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <span>Generating...</span>
+                </>
+              ) : (
+                <>
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                  </svg>
+                  <span>Daily Digest</span>
+                </>
+              )}
             </button>
           </div>
         </div>
@@ -76,6 +135,22 @@ export default function DashboardPage() {
 
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        {/* Audio Player */}
+        {showAudioPlayer && audioData && (
+          <div className="mb-8 animate-fade-in">
+            <AudioPlayer
+              audioUrl={audioData.audioUrl}
+              title="Daily Article Digest"
+              duration={audioData.duration}
+            />
+            <button
+              onClick={() => setShowAudioPlayer(false)}
+              className="mt-4 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+            >
+              Hide player
+            </button>
+          </div>
+        )}
         {/* Stats Cards */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
           <div className="glass rounded-xl p-6 hover:bg-white/20 dark:hover:bg-gray-800/20 transition-all duration-200">

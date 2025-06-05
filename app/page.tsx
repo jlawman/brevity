@@ -42,7 +42,7 @@ export default function Home() {
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
               You find dozens of interesting articles daily, but reading them all 
-              is impossible. Important insights get lost in your endless "read later" 
+              is impossible. Important insights get lost in your endless &ldquo;read later&rdquo; 
               list that never actually gets read.
             </p>
           </div>

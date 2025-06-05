@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 // Mock data for development
 const mockArticles = [
@@ -114,10 +115,11 @@ export default function DashboardPage() {
             >
               {/* Article Image */}
               <div className="aspect-w-16 aspect-h-9 relative h-48 overflow-hidden">
-                <img
+                <Image
                   src={article.featuredImage}
                   alt={article.title}
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 <span className="absolute bottom-4 left-4 inline-flex items-center rounded-full bg-white/20 backdrop-blur-md px-3 py-1 text-xs font-medium text-white">

@@ -40,10 +40,16 @@ body {
   }
   
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 to-primary-700;
+    background-image: linear-gradient(to right, #a855f7, #7e22ce);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   .text-gradient-accent {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-accent-500 to-accent-700;
+    background-image: linear-gradient(to right, #14b8a6, #0d9488);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }

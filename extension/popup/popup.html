@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brevity</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Brevity</h1>
+      <p class="tagline">Save & Summarize with AI</p>
+    </header>
+    
+    <main>
+      <button id="saveButton" class="save-button">
+        <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        <span>Save Article</span>
+      </button>
+      
+      <div id="status" class="status hidden">
+        <div class="status-content">
+          <div class="spinner hidden"></div>
+          <p class="status-message"></p>
+        </div>
+      </div>
+      
+      <div class="actions">
+        <a href="https://brevity.vercel.app/dashboard" target="_blank" class="link">
+          View Dashboard →
+        </a>
+      </div>
+    </main>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
